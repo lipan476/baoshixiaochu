@@ -1,0 +1,41 @@
+
+tangyuan.png
+size: 200,119
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+tangyuan_shenti
+  rotate: false
+  xy: 0, 0
+  size: 134, 119
+  orig: 134, 119
+  offset: 0, 0
+  index: -1
+tangyuan_yan
+  rotate: true
+  xy: 136, 13
+  size: 106, 22
+  orig: 106, 22
+  offset: 0, 0
+  index: -1
+tangyuan_yjio
+  rotate: false
+  xy: 160, 5
+  size: 20, 59
+  orig: 20, 59
+  offset: 0, 0
+  index: -1
+tangyuan_zjio
+  rotate: false
+  xy: 182, 8
+  size: 17, 56
+  orig: 17, 56
+  offset: 0, 0
+  index: -1
+tangyuan_zui
+  rotate: true
+  xy: 160, 66
+  size: 53, 40
+  orig: 53, 40
+  offset: 0, 0
+  index: -1
