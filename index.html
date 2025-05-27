@@ -92,6 +92,137 @@
     }
   </script>
 
+
+
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+
+<script>
+  // Firebase 配置（使用你提供的信息）
+  const firebaseConfig = {
+    apiKey: "AIzaSyCYsAv1YEB2SlNaRvnZA7dsL13DvOyJprM",
+    authDomain: "baoshixiaochu.firebaseapp.com",
+    projectId: "baoshixiaochu",
+    storageBucket: "baoshixiaochu.firebasestorage.app",
+    messagingSenderId: "31685729794",
+    appId: "1:31685729794:web:11e072d7328296c655111b"
+  };
+
+  // 初始化 Firebase
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+
+
+
+  // 提供全局函数供游戏调用
+  window.submitHighScore = function (playerId, playerInfo, newScore) {
+  const playerRef = db.ref("highscore_leaderboard/" + playerId);
+
+  playerRef.once("value").then((snapshot) => {
+    const existingData = snapshot.val();
+    const currentScore = existingData?.highScore || 0;
+
+    if (newScore > currentScore) {
+      playerRef.set({
+        nickName: playerInfo.nickName || 'Anonymous',
+        avatarUrl: playerInfo.avatarUrl || '',
+        highScore: newScore,
+        time: Date.now()  // 记录更新的时间
+      });
+    }
+  });
+};
+
+
+//提交过关等级
+window.submitLevel = function (playerId, playerInfo, newLevel) {
+  const playerRef = db.ref("level_leaderboard/" + playerId);
+
+  playerRef.once("value").then((snapshot) => {
+    const existingData = snapshot.val();
+    const currentLevel = existingData?.level || 0;
+
+    if (newLevel > currentLevel) {
+      playerRef.set({
+        nickName: playerInfo.nickName || 'Anonymous',
+        avatarUrl: playerInfo.avatarUrl || '',
+        level: newLevel,
+        time: Date.now()  // 记录更新的时间
+      });
+    }
+  });
+};
+
+
+//获取最高分数
+window.loadHighScoreLeaderboard = function (callback) {
+  const leaderboardRef = db.ref("highscore_leaderboard");
+
+  leaderboardRef
+    .orderByChild("highScore")  // 按高分排序
+    .limitToLast(100)  // 获取前100名玩家
+    .once("value", (snapshot) => {
+      const result = [];
+
+      snapshot.forEach((childSnapshot) => {
+        const entry = childSnapshot.val();
+        const playerId = childSnapshot.key;
+
+        result.push({
+          playerId,  // 玩家 ID
+          playerInfo: {
+            nickName: entry.nickName,
+            avatarUrl: entry.avatarUrl
+          },
+          highScore: entry.highScore,
+          time: entry.time
+        });
+      });
+
+      result.reverse();  // 降序排列
+      if (callback) callback(result);
+    });
+};
+
+
+//获取关卡
+window.loadLevelLeaderboard = function (callback) {
+  const leaderboardRef = db.ref("level_leaderboard");
+
+  leaderboardRef
+    .orderByChild("level")  // 按关卡数排序
+    .limitToLast(100)  // 获取前100名玩家
+    .once("value", (snapshot) => {
+      const result = [];
+
+      snapshot.forEach((childSnapshot) => {
+        const entry = childSnapshot.val();
+        const playerId = childSnapshot.key;
+
+        result.push({
+          playerId,  // 玩家 ID
+          playerInfo: {
+            nickName: entry.nickName,
+            avatarUrl: entry.avatarUrl
+          },
+          level: entry.level,
+          time: entry.time
+        });
+      });
+
+      result.reverse();  // 降序排列
+      if (callback) callback(result);
+    });
+};
+
+
+
+</script>
+
+
+
   
 </head>
 <body>
@@ -102,9 +233,9 @@
     </div>
   </div>
 
-<script src="src/settings.1ef8a.js" charset="utf-8"></script>
+<script src="src/settings.acd1a.js" charset="utf-8"></script>
 
-<script src="main.59060.js" charset="utf-8"></script>
+<script src="main.41f07.js" charset="utf-8"></script>
 
 <script type="text/javascript">
 (function () {
